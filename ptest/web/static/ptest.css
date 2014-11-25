@@ -1,0 +1,253 @@
+body {
+    padding-left: 2.5%;
+    padding-right: 2.5%;
+    font-family: Verdana, Arial, sans-serif;
+}
+
+h3 {
+    margin-bottom: 0;
+    text-align: center;
+}
+
+h5 {
+    margin-top: 0.5em;
+    text-align: center;
+    color: slategray;
+}
+
+.error {
+    font-weight: bold;
+    color: red;
+}
+
+div.top {
+    border: 1px solid #b9b9b9;
+    padding: 0.5em;
+    margin-top: 0.2em;
+}
+
+ul.nav {
+    display: inline;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav li {
+    display: inline;
+    font-weight: 300;
+    text-transform: uppercase;
+}
+
+.nav li a {
+    color: #000000;
+    text-decoration: none;
+}
+
+div.login-user {
+    text-align: right;
+}
+
+div.login-user p {
+    margin: 0;
+}
+
+div.login-user-spec {
+    text-align: right;
+    font-size: 0.7em;
+    color: dimgray;
+}
+
+div.login-user-spec p {
+    margin: 0;
+}
+
+div.user-spec p.user {
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+div.user-spec a {
+    font-size: 0.8em;
+}
+
+table {
+    border-collapse: collapse;
+    color: #4a4a4d;
+}
+
+table.large th,
+table.large td {
+    font-size: 0.8em;
+}
+
+table caption {
+    margin-bottom: 0.5em;
+}
+
+th,
+td {
+    border: 1px solid #cecfd5;
+    padding: 0.5em;
+}
+
+th:first-child {
+    border-top-left-radius: 5px;
+}
+
+th:last-child {
+    border-top-right-radius: 5px;
+}
+
+tbody tr.highlight {
+    background-color: #def !important;
+}
+
+tbody tr:nth-child(even) {
+    background: #f0f0f2;
+}
+
+th p,
+td p {
+    margin: 0
+}
+
+th p.score {
+    font-size: 0.6em;
+}
+
+td.prob-id {
+    text-align: center;
+    text-transform: uppercase;
+}
+
+td.prob-title,
+td.sub-user {
+    border-right-style: none;
+}
+
+td.prob-spec,
+td.sub-user-spec {
+    text-align: right;
+    color: #7c7c80;
+    font-size: 0.7em;
+    border-left-style: none;
+}
+
+td.sub-lang {
+    text-align: center;
+}
+
+.sub-verdict {
+    text-transform: lowercase;
+}
+
+td.sub-verdict {
+    font-size: 0.6em;
+    text-align: center;
+}
+
+.sub-verdict-accepted {
+    color: forestgreen;
+}
+
+.sub-verdict-wrong-answer,
+.sub-verdict-presentation-error,
+.sub-verdict-runtime-error,
+.sub-verdict-time-limit-exceeded,
+.sub-verdict-compilation-error {
+    color: #00a
+}
+
+.sub-verdict-internal-error {
+    color: red;
+}
+
+.sub-verdict-unknown {
+    color: #7c7c80;
+}
+
+td.sub-time {
+    text-align: center;
+}
+
+pre {
+    border: 1px solid #cecfd5;
+    padding: 2px;
+    overflow-x: auto;
+}
+
+div.protocol {
+    font-size: 0.8em;
+    margin-top: 1em;
+}
+
+.protocol p,
+.protocol pre {
+    margin: 0;
+}
+
+
+td.st-pos {
+    text-align: right;
+}
+
+td.st-score {
+    text-align: center;
+}
+
+td.st-score a {
+    color: #000000;
+    text-decoration: none;
+}
+
+div.login,
+div.submit {
+    text-align: center;
+}
+
+div.login p.error,
+div.submit p.error {
+    margin: 0;
+    font-size: 0.7em;
+    color: red;
+}
+
+.flask-block {
+    position: absolute;
+    right: 0;
+    margin: 3em 1em;
+}
+
+.flash-box {
+    color: #555;
+    border-radius: 10px;
+    padding: 10px 10px 10px 36px;
+    margin: 3px;
+    display: inline-block;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.flash-box span {
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.flash-error {
+    background: #ffecec url('/static/error.png') no-repeat 10px 50%;
+    border: 1px solid #f5aca6;
+}
+
+.flash-success {
+    background:#e9ffd9 url('/static/success.png') no-repeat 10px 50%;
+    border:1px solid #a6ca8a;
+}
+.flash-warning {
+    background:#fff8c4 url('/static/warning.png') no-repeat 10px 50%;
+    border:1px solid #f2c779;
+}
+.flash-notice {
+    background:#e3f7fc url('/static/notice.png') no-repeat 10px 50%;
+    border:1px solid #8ed9f6;
+}

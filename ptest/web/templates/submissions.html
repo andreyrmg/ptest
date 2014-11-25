@@ -1,0 +1,103 @@
+{% macro sub_table(subs) %}
+  <table align="center" width="100%" class="large">
+    <caption>{{ title }}</caption>
+    <thead>
+    <tr>
+      <th scope="col" style="width: 3.5em;">#</th>
+      <th scope="col" style="width: 11em;">Time</th>
+      <th scope="colgroup" colspan="2">User</th>
+      <th scope="col">Problem</th>
+      <th scope="col">Language</th>
+      <th scope="col">Verdict</th>
+      <th scope="col">Time</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for sub, result in subs if (not request.args['user'] or sub.user == request.args['user']) and (not request.args['prob'] or sub.prob == request.args['prob']) %}
+      <tr>
+        <td>
+          {% if session.user == 'admin' or session.user == sub.user or contest.finished %}
+            <a href="{{ url_for('submission', sub_id=sub.id) }}">
+              {{ sub.id }}
+            </a>
+          {% else %}
+            {{ sub.id }}
+          {% endif %}
+        </td>
+        <td>{{ sub.datetime.strftime('%d.%m.%Y %H:%M:%S') }}</td>
+        {{ sub_user(sub.user) }}
+        {{ sub_prob(sub.prob) }}
+        <td class="sub-lang">{{ sub.lang }}</td>
+        {{ sub_verdict(result) }}
+        {{ sub_time(result) }}
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endmacro %}
+
+{% macro sub_user(user_id) %}
+  {% set user = contest.user(user_id) %}
+  {% if not user %}
+    <td colspan="2"></td>
+  {% else %}
+    <td class="sub-user">{{ user.name }}</td>
+    <td class="sub-user-spec">
+      {% if user.school %}
+        school {{ user.school }}
+      {% endif %}
+      {% if user.klass %}
+        {% if user.school %},{% endif %}
+        class {{ user.klass }}
+      {% endif %}
+    </td>
+  {% endif %}
+{% endmacro %}
+
+{% macro sub_prob(prob_id) %}
+  {% set prob = contest.problem(prob_id) %}
+  {% if not prob %}
+    <td class="error">prob_id - ???</td>
+  {% else %}
+    <td>{{ prob_id }} - {{ prob.title }}</td>
+  {% endif %}
+{% endmacro %}
+
+{% macro sub_verdict(result) %}
+  {% if result %}
+    <td class="sub-verdict sub-verdict-{{ result.verdict.lower().replace(' ', '-') }}">
+      {% if result.verdict == 'Compilation error' %}
+        {{ result.verdict }}
+      {% elif result.verdict == 'Internal error' %}
+        Ooops!!!
+      {% elif result.verdict == 'Accepted' %}
+        <strong>
+          {% if result.pretest %} Pretest accepted {% else %} {{ result.total }} {% endif %}
+        </strong>
+      {% else %}
+        {% if not result.pretest %}
+          <p><strong>{{ result.total }}</strong></p>
+        {% endif %}
+        <p>{{ result.verdict }} on test {{ result.details }}</p>
+      {% endif %}
+    </td>
+  {% else %}
+    <td class="sub-verdict sub-verdict-unknown">Not tested</td>
+  {% endif %}
+{% endmacro %}
+
+{% macro sub_time(result) %}
+  {% if result %}
+    <td class="sub-time">
+      {% if result.verdict == 'Compilation error' %}
+      {% elif result.verdict == 'Internal error' %}
+      {% elif result.verdict == 'Accepted' %}
+        {{ result.max_time }} s
+      {% else %}
+        {{ result.at(result.details).time }} s
+      {% endif %}
+    </td>
+  {% else %}
+    <td class="sub-time"></td>
+  {% endif %}
+{% endmacro %}

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>{{ title }} - ptest</title>
+  <link rel="shortcut icon"
+        href="{{ url_for('static', filename='favicon.ico') }}">
+  <link rel="stylesheet" type="text/css"
+        href="{{ url_for('static', filename='ptest.css') }}">
+  <script
+      src="{{ url_for('static', filename='moment-with-locales.min.js') }}"></script>
+</head>
+<body>
+  {% if not session.user %}
+    <div class="login-user">
+      <a href="{{ url_for('login') }}">Log in</a>
+    </div>
+  {% else %}
+    <div class="login-user">
+      <p class="user" align="right"><strong>
+        {% set user = contest.user(session.user) %}
+        {{ user.name }}
+      </strong></p>
+    </div>
+    {% if user %}
+      <div class="login-user-spec">
+        <p>
+          {% if user.school %}
+            school {{ user.school }}
+          {% endif %}
+          {% if user.klass %}
+            {% if user.school %}, {% endif %}
+            class {{ user.klass }}
+          {% endif %}
+        </p>
+      </div>
+    {% endif %}
+    <div class="login-user-spec">
+      <a href="{{ url_for('logout') }}">Log out</a>
+    </div>
+  {% endif %}
+
+  <section>
+    <div class="top">
+      <ul class="nav">
+        <li><a href="{{ url_for('problems') }}">Problems</a></li>
+        {% if session.user %}
+          <li><a href="{{ url_for('submit') }}">Submit</a></li>
+          <li><a href="{{ url_for('submissions') }}">Submissions</a></li>
+        {% endif %}
+        <li><a href="{{ url_for('standings') }}">Standings</a></li>
+      </ul>
+    </div>
+    <hr>
+  </section>
+
+  <script>
+    function hideFlash(c) {
+      c.style.display = 'none';
+    }
+  </script>
+  <div class="flask-block">
+    {% for status, span, message in get_flashed_messages() %}
+      <div>
+        <div class="flash-box flash-{{ status }}" onclick="hideFlash(this)">
+          <span>{{ span }}</span>
+          {{ message }}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <h3>{{ config.TITLE }}</h3>
+  <h5>status: {{ contest.status(now()) }}</h5>
+
+
+
+
+
+  {% block content %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+
+  <table align="center" width="60%">
+    <caption>Problems</caption>
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="colgroup" colspan="2">Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for id, prob in probs %}
+      <tr>
+        <td class="prob-id">{{ id }}</td>
+        <td class="prob-title">{{ prob.title }}</td>
+        <td class="prob-spec">
+          <p>{{ prob.input_name }}/{{ prob.output_name }}</p>
+          <p>{{ prob.timeout }}</p>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+{% endblock %}

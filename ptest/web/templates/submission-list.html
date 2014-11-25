@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block content %}
+  {% from "submissions.html" import sub_table %}
+  {{ sub_table(submissions.values()) }}
+
+{% endblock %}

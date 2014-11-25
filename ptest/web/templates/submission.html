@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+  {% from 'submissions.html' import sub_table %}
+  {{ sub_table([(submission, result)]) }}
+
+  <pre>{{ source }}</pre>
+
+  {% if contest.finished or session.user == 'admin' %}
+
+    {% if not result %}
+      <p class="sub-verdict-unknown">Not tested</p>
+    {% elif result.verdict == 'Compilation error' %}
+      <p class="sub-verdict-compilation-error">
+        <strong>{{ result.verdict }}</strong></p>
+      <pre>{{ result.details }}</pre>
+    {% elif result.verdict == 'Internal error' %}
+      <p class="sub-verdict-internal-error"><strong>Oooops!!!</strong></p>
+    {% else %}
+      <hr>
+      <h4>Protocol:</h4>
+      {% for t, r in result.tests.items() %}
+        <div class="protocol">
+          <p>
+            <strong>
+              Test #{{ t }}, time: {{ r.time }} s,
+            <span
+                class="sub-verdict sub-verdict-{{ r.verdict.lower().replace(' ', '-') }}">
+              {{ r.verdict }}
+            </span>
+            </strong>
+          </p>
+
+          <p>Input:</p>
+          <pre>{{ r.input }}</pre>
+          {% if r.output %}
+            <p>Output:</p>
+            <pre>{{ r.output }}</pre>
+            {% if r.answer %}
+              <p>Answer:</p>
+              <pre>{{ r.answer }}</pre>
+            {% endif %}
+          {% endif %}
+          {% if r.details %}
+            <p>Details:</p>
+            <pre>{{ r.details }}</pre>
+          {% endif %}
+        </div>
+      {% endfor %}
+
+    {% endif %}
+  {% endif %}
+
+{% endblock %}

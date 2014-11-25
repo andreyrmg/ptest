@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+
+  <div class="submit">
+    <caption>Submit</caption>
+    <form action="{{ url_for('submit') }}" method="post" enctype="multipart/form-data">
+      <p><select name="prob">
+        <option value="" {% if not request.form['prob'] %}selected{% endif %}>
+          Choose problem
+        </option>
+        {% for _, p in contest.problems %}
+          <option value="{{ p.id }}" {% if request.form['prob'] == p.id %}selected{% endif %}>
+            {{ p.id }} - {{ p.title }}
+          </option>
+        {% endfor %}
+      </select></p>
+
+      <p><select name="lang">
+        <option value="" {% if not request.form['lang'] %}selected{% endif %}>
+          Choose language
+        </option>
+        {% for lang, _ in contest.languages %}
+          <option value="{{ lang }}" {% if request.form['lang'] == lang %}selected{% endif %}>
+            {{ lang }}
+          </option>
+        {% endfor %}
+      </select></p>
+
+      <p><input type="file" name="source" accept=".pas,.dpr"></p>
+
+      <p class="error">{{ error if error else '\u00A0' }}</p>
+
+      <p class="submit"><input type="submit" value="Submit"></p>
+    </form>
+  </div>
+
+{% endblock %}

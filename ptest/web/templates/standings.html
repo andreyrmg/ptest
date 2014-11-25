@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+
+  {% from "submissions.html" import sub_user %}
+
+  <table align="center" width="100%" class="large">
+    <caption>{{ title }}</caption>
+    <thead>
+    <tr>
+      <th scope="col" style="width: 2.5em;">#</th>
+      <th scope="colgroup" colspan="2">Name</th>
+      <th scope="col" style="width: 3.5em;">=</th>
+      {% for _, p in contest.problems %}
+        <th style="width: 3.5em;">
+          <p>{{ p.id }}</p>
+
+          <p class="score">{{ p.test_count }}</p>
+        </th>
+      {% endfor %}
+
+    </tr>
+    </thead>
+    <tbody>
+    {% set pos = 0 %}
+    {% set prev = 1000000000 %}
+    {% for user, result in standings if user != 'admin' or session.user == 'admin' %}
+      <tr {% if session.user == user %}class="highlight"{% endif %}>
+        {% set pos = pos + (1 if result['total'] < prev else 0) %}
+        <td class="st-pos">{{ pos }}</td>
+        {{ sub_user(user) }}
+        <td class="st-score">
+          <strong>
+            {% if session.user == 'admin' or session.user == user %}
+              <a href="{{ url_for('submissions', user=user) }}">
+                {{ result['total'] }}
+              </a>
+            {% else %}
+              {{ result['total'] }}
+            {% endif %}
+          </strong>
+        </td>
+        {% for _, p in contest.problems %}
+          <td class="st-score">
+            {% if session.user == 'admin' or session.user == user %}
+              <a href="{{ url_for('submissions', user=user, prob=p.id) }}">
+                {{ result['prob'][p.id] }}
+              </a>
+            {% else %}
+              {{ result['prob'][p.id] }}
+            {% endif %}
+          </td>
+        {% endfor %}
+        {% set prev = result['total'] %}
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+{% endblock %}
