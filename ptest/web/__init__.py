@@ -8,7 +8,7 @@ __author__ = 'Andrey'
 app = Flask(__name__)
 app.config.from_object('config')
 
-contest = Contest(r'f:\olymp-2013',
+contest = Contest('.',
                   admin_pwd=app.config.get('ADMIN_PASSWORD'),
                   start=app.config.get('CONTEST_START'),
                   duration=app.config.get('CONTEST_DURATION'))

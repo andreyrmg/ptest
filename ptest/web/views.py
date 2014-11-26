@@ -103,6 +103,6 @@ def submit():
             prob = request.form['prob']
             lang = request.form['lang']
             contest.submit(user, prob, lang, source.filename, source.stream)
-            flash(('success', 'success:', 'solutions sent!'))
+            flash(('success', 'success:', 'solution sent!'))
             return redirect(url_for('submissions', user=user))
     return render_template('submit.html', title='Submit', error=error)
