@@ -13,11 +13,9 @@ parser.add_argument('ids', metavar='ID', type=str, nargs='*',
 parser.add_argument('-c', default='.', help='contest directory')
 parser.add_argument('-p', '--pretest', dest='pretest', action='store_true')
 parser.add_argument('--system', dest='system', action='store_true')
-parser.add_argument('-s', '--store', dest='store', action='store_true')
-parser.add_argument('-f', '--force', dest='force', action='store_true')
+parser.add_argument('--store', dest='store', action='store_true')
 parser.add_argument('--pause', dest='pause', action='store_true')
-parser.set_defaults(pretest=False, system=False, store=False, force=False,
-                    pause=False)
+parser.set_defaults(pretest=False, system=False, store=False, pause=False)
 
 args = parser.parse_args()
 
