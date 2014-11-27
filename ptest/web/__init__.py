@@ -25,6 +25,7 @@ def run(host='0.0.0.0', port=None, config=None):
 
     app.jinja_env.globals['contest'] = contest
     app.jinja_env.globals['now'] = datetime.now
+    app.jinja_env.globals['sum'] = sum
 
     from . import views
 

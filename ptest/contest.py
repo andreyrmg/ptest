@@ -1,4 +1,4 @@
-from collections import OrderedDict
+from collections import OrderedDict, defaultdict
 import csv
 from datetime import datetime, timedelta
 import os
@@ -131,24 +131,32 @@ class Contest(object):
                     result = pickle.load(f)
             subs_with_result[sub.id] = (sub, result)
         self._state['submissions'] = subs_with_result
-        standings = {}
+        standings = defaultdict(lambda: dict(total=[], prob={}))
         for sub, result in subs_with_result.values():
-            user_result = standings.get(sub.user, dict(total=0, prob={}))
+            user_result = standings[sub.user]
             if sub.prob in user_result['prob']:
                 continue
             standings[sub.user] = user_result
             if not result or result.pretest and self.status(t) == 'finish':
                 user_result['prob'][sub.prob] = '?'
                 continue
+
+            def update_total(total, points):
+                for i, p in enumerate(total):
+                    if p < points:
+                        total.insert(i, points)
+                        return
+                total.append(points)
+
             if result.pretest and self.status(t) == 'run':
                 if result.verdict == Result.VERDICT_ACCEPTED:
                     user_result['prob'][sub.prob] = '+'
-                    user_result['total'] += result.total
+                    update_total(user_result['total'], result.total)
                 else:
                     user_result['prob'][sub.prob] = '-'
                 continue
             user_result['prob'][sub.prob] = result.total
-            user_result['total'] += result.total
+            update_total(user_result['total'], result.total)
         standings = list(standings.items())
         standings.sort(key=lambda x: (x[1]['total'], x[0]), reverse=True)
         self._state['standings'] = standings

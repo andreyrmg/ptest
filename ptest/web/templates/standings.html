@@ -25,17 +25,18 @@
     {% set prev = 1000000000 %}
     {% for user, result in standings if user != 'admin' or session.user == 'admin' %}
       <tr {% if session.user == user %}class="highlight"{% endif %}>
-        {% set pos = pos + (1 if result['total'] < prev else 0) %}
+        {% set total = sum(result['total'][:4]) %}
+        {% set pos = pos + (1 if total < prev else 0) %}
         <td class="st-pos">{{ pos }}</td>
         {{ sub_user(user) }}
         <td class="st-score">
           <strong>
             {% if session.user == 'admin' or session.user == user %}
               <a href="{{ url_for('submissions', user=user) }}">
-                {{ result['total'] }}
+                {{ total }}
               </a>
             {% else %}
-              {{ result['total'] }}
+              {{ total }}
             {% endif %}
           </strong>
         </td>
@@ -50,7 +51,7 @@
             {% endif %}
           </td>
         {% endfor %}
-        {% set prev = result['total'] %}
+        {% set prev = total %}
       </tr>
     {% endfor %}
     </tbody>
