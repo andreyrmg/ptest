@@ -4,7 +4,7 @@ body {
     font-family: Verdana, Arial, sans-serif;
 }
 
-h3 {
+h3, h4 {
     margin-bottom: 0;
     text-align: center;
 }
@@ -13,6 +13,10 @@ h5 {
     margin-top: 0.5em;
     text-align: center;
     color: slategray;
+}
+
+p.error-test {
+    text-align: center;
 }
 
 .error {
