@@ -7,7 +7,7 @@ import shutil
 import traceback
 from ptest.checklib import reader, WrongAnswerError, PresentationError
 from ptest.language import CompilationError
-from ptest.process import run, ProcessRuntimeError, ProcessTimeoutExpired
+from ptest.process import run, RuntimeError, TimeoutExpiredError
 from ptest.result import Result, TestResult, compilation_error, unknown_error
 
 __author__ = 'andrey'
@@ -125,16 +125,17 @@ class Problem(object):
         output_fn = os.path.join(working_dir, self._output_name)
         try:
             shutil.copyfile(test_fn, input_fn)
-            open(output_fn, 'a')
+            # open(output_fn, 'a')
             try:
-                time = run(cmd[0], working_dir, input_fn, output_fn, self._timeout)
+                time = run(cmd, working_dir, input_fn, output_fn, self._timeout)
+                # time = run(cmd[0], working_dir, input_fn, output_fn, self._timeout)
                 verdict, details = self._run_checker(test_fn, output_fn, answer_fn)
-            except ProcessRuntimeError as e:
-                time = e.args[0]
+            except RuntimeError as e:
+                time = e.time
                 verdict = Result.VERDICT_RUNTIME_ERROR
-                details = 'exit status: {}'.format(e.args[1])
-            except ProcessTimeoutExpired as e:
-                time = e.args[0]
+                details = 'exit status: {}'.format(e.exitcode)
+            except TimeoutExpiredError as e:
+                time = e.time
                 verdict = Result.VERDICT_TIMEOUT
                 details = None
             return TestResult(verdict, details, time, test_fn, output_fn, answer_fn)
@@ -146,12 +147,10 @@ class Problem(object):
         if not self._checker:
             return Result.VERDICT_INTERNAL_ERROR, 'checker not specified'
         try:
-            with reader(test_fn) as i, reader(output_fn, output=True) as o, reader(
-                    answer_fn) as a:
+            with reader(test_fn) as i, reader(output_fn, output=True) as o, reader(answer_fn) as a:
                 result = self._checker.run(i, o, a)
                 if not isinstance(result, tuple) or len(result) != 2:
-                    return Result.VERDICT_INTERNAL_ERROR, 'checker failed: ' \
-                                                          'bad result ' + repr(result)
+                    return Result.VERDICT_INTERNAL_ERROR, 'checker failed: bad result ' + repr(result)
                 return result
         except WrongAnswerError as e:
             return Result.VERDICT_WRONG_ANSWER, str(e)

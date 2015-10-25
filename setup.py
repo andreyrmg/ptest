@@ -1,10 +1,13 @@
 from distutils.core import setup, Extension
+import os
 
-process = Extension('ptest.process',
-                    sources=['ptest/process.c'])
+ext_modules = []
+if os.name == 'nt':
+    ext_modules.append(Extension('ptest.process_nt',
+                                 sources=['ptest/process-nt.c']))
 
 setup(name='ptest',
       packages=['ptest',
                 'ptest.tools',
                 'ptest.web'],
-      ext_modules=[process])
+      ext_modules=ext_modules)

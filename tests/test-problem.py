@@ -1,11 +1,11 @@
-from ptest import language, problem
+import os
+import unittest
 
+from ptest import language, problem
 from ptest.result import Result
 
 
 __author__ = 'andrey'
-
-import unittest
 
 
 class ProblemTestCase(unittest.TestCase):
@@ -13,7 +13,7 @@ class ProblemTestCase(unittest.TestCase):
         problems = problem.load_from_file('./contest/problem.ini')
         self.problem = problems['A']
 
-        compilers = language.load_from_file('./contest/compiler.ini')
+        compilers = language.load_from_file('./contest/compiler-{}.ini'.format(os.name))
         self.fpc = compilers['Free Pascal']
         self.dcc32 = compilers['Delphi']
 
